@@ -1,15 +1,36 @@
 const connection = require('../config/connection');
 
-function selectAll() {
+var orm = {
+selectAll: function(table, cb) {
+  connection.query('select * from ' + table + ';', function(err, result) {
+    if (err) {
+      console.log('ERROR: ' + err.stack);
+    }
+    cb(result);
+  });
+},/*
+create: function(table, col, val, cb) {
+  connection.query('insert into ? (?) values (?);', val, function(err, result) {
+    if (err) {
+      console.log('ERROR: ' + err.stack);
+    }
+    cb(result);
+  })
+},*/
 
-};
+create: function(table, cols, vals, cb) {
+  
+},
 
-function insertOne() {
 
-};
+update: function(id, cb) {
+  connection.query('update burger set devoured=true where id = ?;', function(err, result) {
+    if (err) {
+      console.log('ERROR: ' + err.stack);
+    }
+    cb(result);
+  }
+  )}
 
-function updateOne() {
-
-};
-
+}
 module.exports = orm;

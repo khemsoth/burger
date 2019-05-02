@@ -1,0 +1,48 @@
+<h1>Let's eat some burgers!</h1>
+
+<h2>Menu:</h2>
+<ul>
+{{#each burger}}
+    {{#unless devoured}}
+<li>
+  <p>{{this.burger_name}}
+    <button class="devour" status='{{this.burger_name}}'>Devour this burger!</button>
+  </p>
+</li>
+  {{/unless}}
+{{/each}}
+</ul>
+<h2>Burgers Eaten</h2>
+<ul>
+{{#each burger}}
+  {{#if devoured}}
+  <li>
+  <p>{{this.burger_name}}
+  </p>
+  </li>
+    {{/if}}
+{{/each}}
+</ul>
+
+
+
+<h2>Add some burgers to the menu!</h2>
+<form action="/" method="POST">
+  <label for="addBurger">Burger Name:</label><br>
+  <input type="text" name="add"><br>
+  <button type="submit">Add to the menu</button>
+</form>
+
+<script>
+  $('.devour').on('click', function(event) {
+    event.preventDefault();
+    var burg = $(this).attr('status');
+    $.ajax('/' + burg, {
+      type: 'put',
+      data: burg
+    }).then(function() {
+      console.log('Devoured the burger!');
+      location.reload();
+    })
+  })
+</script>
