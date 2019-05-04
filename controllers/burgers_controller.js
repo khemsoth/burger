@@ -12,39 +12,26 @@ router.get('/', function(req, res) {
   });
 });
 
-router.put('/api/:id', function(req, res) {
-  burger.update({
-    devoured: req.body.devoured
-  }, function(result) {
-    if(result.changedRows === 0) {
-      return res.status(404).end();
-    } else {
-      res.status(200).end();
-    }
-  }
-  )}
-);
-/*
-router.post('/api/burger', function(req,res) {
-  burger.create([
-    'burger_name'
-  ],
-  [
-    req.body.burger_name
-  ], function(result) {
-    res.json({ id: result.insertId })
-  });
-});*/
 
-router.post("/api/burgers", function(req, res) {
-  cat.create([
-    'burger_name'
-  ], [
-    req.body.burger_name
-  ], function(result) {
-    // Send back the ID of the new quote
+router.post("/api/burgers/", function(req, res) {
+  burger.create(
+    req.body.burger_name,
+    function(result) {
     res.json({ id: result.insertId });
   });
+});
+
+router.put('/api/burgers/:id', function(req, res) {
+  burger.update(
+    req.body.devoured,
+    function(result) {
+      if (result.changedRows === 0) {
+        return res.status(404).end();
+      }
+      res.status(200).end();
+
+    }
+  );
 });
 
 module.exports = router;

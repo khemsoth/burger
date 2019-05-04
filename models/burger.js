@@ -6,16 +6,20 @@ var burger = {
       cb(res);
     });
   },
-update: function(id, cb) {
-  orm.update(id, function(res) {
-    cb(res);
-  });
-},
-  create: function(col, val, cb) {
-    orm.create('burger', col, val, function(res) {
+
+  update: function(devoured, cb) {
+    orm.update(devoured, function(res) {
+      cb(res);
+    });
+  },
+
+  create: function(burger_name, cb) {
+    orm.create(burger_name,  function(res) {
       cb(res);
     });
   }
+  
+  
 };
 
 

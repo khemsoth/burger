@@ -8,29 +8,23 @@ selectAll: function(table, cb) {
     }
     cb(result);
   });
-},/*
-create: function(table, col, val, cb) {
-  connection.query('insert into ? (?) values (?);', val, function(err, result) {
-    if (err) {
-      console.log('ERROR: ' + err.stack);
-    }
-    cb(result);
-  })
-},*/
-
-create: function(table, cols, vals, cb) {
-  
 },
 
-
-update: function(id, cb) {
-  connection.query('update burger set devoured=true where id = ?;', function(err, result) {
+create: function(burger_name, cb) {
+  connection.query('insert into burger (burger_name) values (?) ', burger_name, function(err, result) {
     if (err) {
-      console.log('ERROR: ' + err.stack);
+      throw err;
     }
     cb(result);
-  }
-  )}
+  });
+},
 
+update: function(devoured, cb) {
+  connection.query('update burger set devoured = true where ?', devoured, function (err, result) {
+    if(err) throw err;
+    cb(result);
+  });
 }
+};
+
 module.exports = orm;

@@ -6,7 +6,7 @@
     {{#unless devoured}}
 <li>
   <p>{{this.burger_name}}
-    <button class="devour" status='{{this.burger_name}}'>Devour this burger!</button>
+    <button class="devour" status='{{this.burger_name}}' data-id='{{id}}' data-devoured='{{devoured}}'>Devour this burger!</button>
   </p>
 </li>
   {{/unless}}
@@ -27,22 +27,48 @@
 
 
 <h2>Add some burgers to the menu!</h2>
-<form action="/" method="POST">
+<form action="/api/burgers" method="POST" class="createBurger">
   <label for="addBurger">Burger Name:</label><br>
-  <input type="text" name="add"><br>
-  <button type="submit">Add to the menu</button>
+  <input type="text" name="name" id="newBurgerName"><br>
+  <button type="submit" id="submitBurger">Add to the menu</button>
 </form>
 
 <script>
-  $('.devour').on('click', function(event) {
+$(function() {
+  $(".devour").on("click", function(event) {
     event.preventDefault();
-    var burg = $(this).attr('status');
-    $.ajax('/' + burg, {
-      type: 'put',
-      data: burg
+    var id = $(this).data("id");
+    var newState = $(this).data('devoured');
+    var newDevourState = {
+      devoured: newState + 1
+    };
+    console.log('id: ' + id);
+    console.log('newState' + newState);
+    console.log('new devour state: ' + JSON.stringify(newDevourState));
+    $.ajax("/api/burgers/" + id, {
+      type: "PUT",
+      data: newDevourState
+    }).then(
+      function() {
+        console.log("changed devoured to " + newDevourState);
+        location.reload();
+      }
+    );
+  });
+
+  $('#submitBurger').on('click', function(event) {
+    event.preventDefault();
+    var burger = {
+      burger_name: $('#newBurgerName').val().trim()
+    };
+    $.ajax('/api/burgers', {
+      type: 'POST', 
+      data: burger
     }).then(function() {
-      console.log('Devoured the burger!');
+      console.log('New burger added to menu');
       location.reload();
     })
-  })
+  });
+  
+});
 </script>
